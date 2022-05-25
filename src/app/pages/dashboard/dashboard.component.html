@@ -1,0 +1,124 @@
+<div class="row">
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <i class="nc-icon nc-money-coins text-warning"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Balance</p>
+              <p class="card-title">CHF 0
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <i class="nc-icon nc-sun-fog-29  text-success"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Completed </p>
+              <p class="card-title">0
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <i class="nc-icon nc-world-2 text-danger"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Open</p>
+              <p class="card-title">11
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <i class="nc-icon nc-favourite-28 text-primary"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Fun</p>
+              <p class="card-title">infinity
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Start Challenges -->
+<div class="row">
+  <div class="col-md-4" *ngFor="let challenge of challenges">
+    <div class="card ">
+      <div class="card-header ">
+        <h5 class="card-title">{{challenge.title}}</h5>
+        <div class="card-category">
+          <div class="legend">
+            <div *ngIf="challenge.difficulty == 1"><i class="fa fa-circle text-warning"></i> Easy</div>
+            <div *ngIf="challenge.difficulty == 2"><i class="fa fa-circle text-primary"></i> Medium</div>
+            <div *ngIf="challenge.difficulty == 3"><i class="fa fa-circle text-danger"></i> Hard</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body ">
+          {{challenge.description}}
+      </div>
+      
+      <div class="card-footer ">
+        <h5>CHF {{challenge.profit}}</h5>
+        <hr>
+        <div class="stats">
+          <div class =" custom-file overflow-hidden  mb-5 ">
+            <input id =" customFile "type = "file" (change) = "selectFile($event, challenge.id)" class = "custom-file-input ">
+            <label for = "customFile" class = "custom-file-label "> Upload Image</label>
+          </div>
+          <!-- <button class="btn btn-primary btn-neutral" (click) = "selectFile($event)">Upload Image</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf = "status" class = "spinner" style = "font-size: 18px">
+  <div class = "head"> </div>
+</div>
+
+<div *ngIf = "message" class = "alert alert-success" role = "alert">
+{{message}}
+</div>
+
+<img src="{{this.image}}" width="500" height="600">
