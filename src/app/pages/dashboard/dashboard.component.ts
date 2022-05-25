@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {AuthChangeEvent, createClient, Session, SupabaseClient} from '@supabase/supabase-js';
 import { Challenge } from 'app/model/challenge';
@@ -91,5 +91,9 @@ export class DashboardComponent implements OnInit{
       let objectURL = URL.createObjectURL(blob.data);       
       this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
     })
+  }
+
+  updateChallengeWithImage(path:string){
+    
   }
 }

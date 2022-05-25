@@ -8,6 +8,7 @@ export interface Challenge {
     description: String;
     profit: Number;
     difficulty: Number;
-    done: Boolean
+    done: Boolean;
+    
 
 }
