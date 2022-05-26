@@ -9,6 +9,6 @@ export interface Challenge {
     profit: Number;
     difficulty: Number;
     done: Boolean;
-    
+    path: string;
 
 }

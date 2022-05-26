@@ -24,13 +24,31 @@ export class SupabaseService {
         description: challenge.description,
         profit: challenge.profit,
         difficulty: challenge.difficulty,
-        done: challenge.done
+        done: challenge.done,
+        path: challenge.path
       };
       challengelist.push(challenge);
     });
-
     // console.log(challengelist);
-
     return challengelist;
   }
+
+  async completeChallenge(challege:Challenge, path:string){
+    console.log("pathhhh", path)
+    const update = {
+      done: true,
+      path: challege.path,
+    };
+    
+    // return this.supabase.from('challenge').upsert(update, {
+    //   returning: 'minimal', // Do not return the value after inserting
+    // });
+
+    const {data, error} = await this.supabase
+      .from('challenge')
+      .update(update)
+      .match({id: challege.id})
+
+  }
+
 }

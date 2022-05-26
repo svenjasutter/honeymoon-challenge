@@ -15,6 +15,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastComponent } from './pages/toast/toast.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     AdminLayoutComponent,
     SignInComponent,
-    ProfileComponent
+    ProfileComponent,
+    ToastComponent
   ],
   imports: [
     BrowserAnimationsModule,
