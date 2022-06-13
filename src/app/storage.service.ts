@@ -16,8 +16,6 @@ export class StorageService {
     const { data, error } = await this.supabase.storage
       .from(bucket)
       .upload(path, file);
-
-
     return { data, error };
   }
   
@@ -38,5 +36,5 @@ export class StorageService {
     const { data, error } = await this.supabase.storage.getBucket('photos');
     return { data, error };
   }
-}
 
+}

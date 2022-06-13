@@ -25,7 +25,8 @@ export class SupabaseService {
         profit: challenge.profit,
         difficulty: challenge.difficulty,
         done: challenge.done,
-        path: challenge.path
+        path: challenge.path,
+        image: null
       };
       challengelist.push(challenge);
     });
@@ -35,20 +36,28 @@ export class SupabaseService {
 
   async completeChallenge(challege:Challenge, path:string){
     console.log("pathhhh", path)
+    console.log("chall", challege)
     const update = {
-      done: true,
-      path: challege.path,
+      path: path,
+      done: true
     };
-    
-    // return this.supabase.from('challenge').upsert(update, {
-    //   returning: 'minimal', // Do not return the value after inserting
-    // });
 
-    const {data, error} = await this.supabase
+    await this.supabase
       .from('challenge')
       .update(update)
       .match({id: challege.id})
-
+      .then(a=>{
+        console.log("data after update:",a);
+      }) 
   }
 
+  //#region Widgets
+  async countChallenges(done:Boolean):Promise<Number>{
+    const { data, error } = await this.supabase
+      .from('challenge')
+      .select()
+      .eq('done', done)
+    return data.length;
+  }
+  //#endregion
 }

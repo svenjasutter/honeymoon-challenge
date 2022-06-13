@@ -1,8 +1,9 @@
-import { Component, OnInit, SecurityContext } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {AuthChangeEvent, createClient, Session, SupabaseClient} from '@supabase/supabase-js';
 import { Challenge } from 'app/model/challenge';
 import { StorageService } from 'app/storage.service';
+import * as internal from 'stream';
 import {environment} from "../../../environments/environment";
 import { SupabaseService } from "../../supabase.service";
 import { ToastService } from '../toast/toast.service';
@@ -14,6 +15,7 @@ import { ToastService } from '../toast/toast.service';
     templateUrl: 'dashboard.component.html'
 })
 
+
 export class DashboardComponent implements OnInit{
 
   public canvas : any;
@@ -23,7 +25,9 @@ export class DashboardComponent implements OnInit{
   status: boolean;
   bucket: string;
 
-  image :any;
+  countCompleted :Number;
+  countOpen :Number;
+  balance :number;
 
   constructor(private readonly supabase: SupabaseService,
     private storageService: StorageService,
@@ -33,10 +37,26 @@ export class DashboardComponent implements OnInit{
     this.message = null;
     this.status = false;
   }
+  transform(value: any, ...args: any[]) {
+    throw new Error('Method not implemented.');
+  }
 
   async ngOnInit(){
     this.challenges = await this.supabase.getAllChallenges();
-    console.log(this.challenges);
+    /* Load Images if exists */
+    this.challenges.forEach(async challenge=>{
+      if(challenge.path != null && challenge.path != ""){
+        // console.log("Challenge: ", challenge.title)
+        await this.getImageFromPath(challenge.path, challenge);
+
+        
+      }
+    })
+    /* Update Widgets */
+    this.getCountsChallenges()
+    this.getBalance()
+
+    // console.log("challenges:",this.challenges);
   }
 
   checkBucketExists() {
@@ -69,14 +89,15 @@ export class DashboardComponent implements OnInit{
     const file: File = input.files[0];
     const name = file.name.replace(/ /g, '');
 
-    console.log("file:", file)
-    console.log("name:", name)
+    // console.log("file:", file)
+    // console.log("name:", name)
 
-    console.log("bucket:", this.bucket)
+    // console.log("bucket:", this.bucket)
 
 
     this.storageService.upload(this.bucket, name, file).then((data) => {
       if (data.error) {
+        /*Upload failed*/
         // this.message = `Error send message ${data.error.message}`;
         this.toastService.show(`Error: ${data.error.message}`, {
           delay: 7000,
@@ -84,7 +105,7 @@ export class DashboardComponent implements OnInit{
           classname: 'bg-danger text-light',
         });
       } else {
-        console.log(data.data);
+        /*Upload success*/
 
         this.toastService.show(`File ${file.name} uploaded with success!`, {
           delay: 7000,
@@ -92,37 +113,62 @@ export class DashboardComponent implements OnInit{
           classname: 'bg-success text-light',
         });
 
-        this.message = `File ${file.name} uploaded with success!`;
+        // this.message = `File ${file.name} uploaded with success!`;
         this.updateCardWithImage(id, name);
-        this.updateChallengeWithImage(id, name);
+        this.updateChallengeWithImageAndDone(id, name);
+        this.ngOnInit();
       }
-      console.log("message:", this.message)
+      // console.log("message:", this.message)
       this.status = false;
+      this.ngOnInit();
     });
   }
 
   updateCardWithImage(id:Number, name:string){
+    /* Get uploaded Image from Challenge */
     this.storageService.download(this.bucket,name).then((blob)=>{
       let objectURL = URL.createObjectURL(blob.data);       
-      this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      var c = this.challenges.find(x=>x.id = id);
+      c.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
     })
   }
 
-  updateChallengeWithImage(id:number, path:string){
-    // Challeng Done auf True
-    // Foto path Challenge hinzufügen
-    console.log("id", id, "path", path)
+  updateChallengeWithImageAndDone(id:number, path:string){
     var c = this.challenges.find(x => x.id = id);
-    console.log("challenge", c)
+    console.log("complete this challenge:", c)
     this.supabase.completeChallenge(c, path);
   }
 
-toastTest(){
-  this.toastService.show('testtest', {
-    delay: 7000,
-    autohide: true,
-    classname: 'bg-success text-light',
-  });
-}
+  //#region Widgets
+    getCountsChallenges(){
+      this.supabase.countChallenges(true).then(count=>{
+        this.countCompleted = count;
+      })
+      this.supabase.countChallenges(false).then(count=>{
+        this.countOpen = count;
+      })
+    }
+
+    getBalance(){
+      this.balance = 0;
+      this.supabase.getAllChallenges().then(ret=>{
+        ret.forEach(challenge=>{
+          if(challenge.done){
+            this.balance += challenge.profit;
+          }
+        })
+      })
+    }
+
+    getImageFromPath(path:string, c:Challenge){
+      this.storageService.download(this.bucket,path).then((ret)=>{
+        var binaryData = [];
+        binaryData.push(ret.data);
+        let objectURL = URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
+        c.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        // console.log("imagee",c.image);
+      })
+    }
+  //#endregion
   
 }

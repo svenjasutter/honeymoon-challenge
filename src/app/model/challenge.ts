@@ -6,9 +6,9 @@ export interface Challenge {
     id?: Number;
     title: String;
     description: String;
-    profit: Number;
+    profit: number;
     difficulty: Number;
     done: Boolean;
     path: string;
-
+    image: any;
 }

@@ -11,7 +11,7 @@
           <div class="col-7 col-md-8">
             <div class="numbers">
               <p class="card-category">Balance</p>
-              <p class="card-title">CHF 0
+              <p class="card-title">CHF {{this.balance}}
                 <p>
             </div>
           </div>
@@ -31,7 +31,7 @@
           <div class="col-7 col-md-8">
             <div class="numbers">
               <p class="card-category">Completed </p>
-              <p class="card-title">0
+              <p class="card-title">{{this.countCompleted}}
                 <p>
             </div>
           </div>
@@ -51,7 +51,7 @@
           <div class="col-7 col-md-8">
             <div class="numbers">
               <p class="card-category">Open</p>
-              <p class="card-title">11
+              <p class="card-title">{{this.countOpen}}
                 <p>
             </div>
           </div>
@@ -83,7 +83,8 @@
 <!-- Start Challenges -->
 <div class="row">
   <div class="col-md-4" *ngFor="let challenge of challenges">
-    <div class="card ">
+    <!-- Show Open Challenge -->
+    <div class="card cardC" *ngIf="!challenge.done">
       <div class="card-header ">
         <h5 class="card-title">{{challenge.title}}</h5>
         <div class="card-category">
@@ -97,17 +98,34 @@
       <div class="card-body ">
           {{challenge.description}}
       </div>
-      
+
       <div class="card-footer ">
         <h5>CHF {{challenge.profit}}</h5>
         <hr>
         <div class="stats">
-          <div class =" custom-file overflow-hidden  mb-5 ">
+          <div class =" custom-file overflow-hidden  mb-2 mt-2 ">
             <input id =" customFile "type = "file" (change) = "selectFile($event, challenge.id)" class = "custom-file-input ">
             <label for = "customFile" class = "custom-file-label "> Upload Image</label>
           </div>
-          <!-- <button class="btn btn-primary btn-neutral" (click) = "selectFile($event)">Upload Image</button> -->
         </div>
+      </div>
+    </div>
+    <!-- Show Completed Challenge -->
+    <div class="card text-center cardC" *ngIf="challenge.done" style="background-color: #6bd098; color: white;"> 
+      <div class="card-header ">
+        <h3 class="card-title ">{{challenge.title}}</h3>
+      </div>
+      <div class="card-body">
+        <div class="icon-big text-center icon-warning">
+          <i class="nc-icon nc-check-2" style="font-size:50px"></i>
+        </div>
+        <!-- <img [src]='challenge.image' width="500" height="500"/> -->
+        <!-- <img [src]='challenge.image.changingThisBreaksApplicationSecurity' width="500" height="500"/> -->
+      </div>
+
+      <div class="card-footer ">
+        <hr>
+        <h5>CHF {{challenge.profit}}</h5>
       </div>
     </div>
   </div>
@@ -118,9 +136,5 @@
 </div>
 
 <div *ngIf = "message" class = "alert alert-success" role = "alert">
-{{message}}
+  {{message}}
 </div>
-
-<img id="myimage" [src]='image'/>
-
-<button (click)="toastTest()">ToastTest</button>
