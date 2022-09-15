@@ -23,7 +23,7 @@ export class SignInComponent {
 
   public signIn(): void {
     this.loading = true;
-    this.supabaseService.signIn(this.user.email)
+    this.supabaseService.signIn()
     .then(() => {
     }).catch(() => {
       this.loading = false;
