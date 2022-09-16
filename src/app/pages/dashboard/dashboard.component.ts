@@ -139,6 +139,21 @@ export class DashboardComponent implements OnInit{
     this.supabase.completeChallenge(c, path);
   }
 
+  async revertChallenge(id:number){
+    await this.supabase.deletePhotoById(id).then(
+      x=>{
+        console.log("Revert challenge" + id);
+        this.supabase.revertChallenge(id);
+        this.ngOnInit();
+      }
+    );
+    this.ngOnInit();
+  }
+
+  trackChallenge(index, challenge){
+    return challenge.id;
+  }
+
   //#region Widgets
     getCountsChallenges(){
       this.supabase.countChallenges(true).then(count=>{
@@ -171,4 +186,5 @@ export class DashboardComponent implements OnInit{
     }
   //#endregion
   
+
 }

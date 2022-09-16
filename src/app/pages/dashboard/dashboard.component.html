@@ -82,7 +82,7 @@
 </div>
 <!-- Start Challenges -->
 <div class="row">
-  <div class="col-md-4" *ngFor="let challenge of challenges">
+  <div class="col-md-4" *ngFor="let challenge of challenges; trackBy: trackChallenge">
     <!-- Show Open Challenge -->
     <div class="card cardC" *ngIf="!challenge.done">
       <div class="card-header ">
@@ -119,6 +119,7 @@
         <div class="icon-big text-center icon-warning">
           <i class="nc-icon nc-check-2" style="font-size:50px"></i>
         </div>
+        <button type="button" (click)="revertChallenge(challenge.id)" class="btn btn-sm btn-warning">Revert</button>
         <!-- <img [src]='challenge.image' width="500" height="500"/> -->
         <!-- <img [src]='challenge.image.changingThisBreaksApplicationSecurity' width="500" height="500"/> -->
       </div>
@@ -126,6 +127,7 @@
       <div class="card-footer ">
         <hr>
         <h5>CHF {{challenge.profit}}</h5>
+        
       </div>
     </div>
   </div>

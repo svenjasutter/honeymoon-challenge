@@ -37,4 +37,10 @@ export class StorageService {
     return { data, error };
   }
 
+  async deletePhotoFromBucket(path: string){
+    const { data, error } = await this.supabase.storage
+  .from('photos')
+  .remove([path]);
+  }
+
 }
