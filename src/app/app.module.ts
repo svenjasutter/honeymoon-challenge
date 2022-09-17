@@ -18,13 +18,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastComponent } from './pages/toast/toast.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     SignInComponent,
     ProfileComponent,
-    ToastComponent
+    ToastComponent,
   ],
   imports: [
     BrowserAnimationsModule,
