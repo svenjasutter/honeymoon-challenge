@@ -114,7 +114,7 @@ export class DashboardComponent implements OnInit{
         });
 
         // this.message = `File ${file.name} uploaded with success!`;
-        this.updateCardWithImage(id, name);
+        // this.updateCardWithImage(id, name);
         this.updateChallengeWithImageAndDone(id, name);
         this.ngOnInit();
       }
@@ -124,6 +124,7 @@ export class DashboardComponent implements OnInit{
     });
   }
 
+  /* NOT WORKING!!! */
   updateCardWithImage(id:Number, name:string){
     /* Get uploaded Image from Challenge */
     this.storageService.download(this.bucket,name).then((blob)=>{
@@ -148,10 +149,6 @@ export class DashboardComponent implements OnInit{
       }
     );
     this.ngOnInit();
-  }
-
-  trackChallenge(index, challenge){
-    return challenge.id;
   }
 
   //#region Widgets

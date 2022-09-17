@@ -26,7 +26,6 @@ export class StorageService {
 
     return { data, error };
   }
-
   async createBucket() {
     const { data, error } = await this.supabase.storage.createBucket('photos');
     return { data, error };
