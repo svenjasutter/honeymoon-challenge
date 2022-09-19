@@ -1,7 +1,7 @@
 <div *ngFor="img in this.images">
-    <img src="{{img}}">
-    <p>test</p>
+    <img src="{{img | async}}">
+    <p>test ngFor</p>
 </div>
-
+<p>test</p>
 <img src="{{image}}">
 
