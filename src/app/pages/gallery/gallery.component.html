@@ -1,7 +1,41 @@
-<div *ngFor="img in this.images">
-    <img src="{{img | async}}">
-    <p>test ngFor</p>
+<div *ngIf="image1" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image1 }}" />
 </div>
-<p>test</p>
-<img src="{{image}}">
+<div *ngIf="image2" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image2 }}" />
+</div>
+<div *ngIf="image3" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image3 }}" />
+</div>
+<div *ngIf="image4" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image4 }}" />
+</div>
+<div *ngIf="image5" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image5 }}" />
+</div>
+<div *ngIf="image6" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image6 }}" />
+</div>
+<div *ngIf="image7" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image7 }}" />
+</div>
+<div *ngIf="image8" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image8 }}" />
+</div>
+<div *ngIf="image9" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image9 }}" />
+</div>
+<div *ngIf="image10" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image10 }}" />
+</div>
+<div *ngIf="image11" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image11 }}" />
+</div>
+<div *ngIf="image12" class="col-md-10 mr-auto ml-auto card">
+  <img src="{{ image12 }}" />
+</div>
+<div *ngIf="!(image1 && image2 && image3 && image4 && image5 && image6 && image7 && image8 && image9 && image10 && image11 && image12)">
+    <h2>No challenges completed yet ...</h2>
+    <p>Lets go</p>
+</div>
 

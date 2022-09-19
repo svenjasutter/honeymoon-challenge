@@ -6,12 +6,13 @@ import { SupabaseService } from 'app/supabase.service';
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
-  styleUrls: ['./gallery.component.scss']
+  styleUrls: ['./gallery.component.css']
 })
 export class GalleryComponent implements OnInit {
-  images :any[] = [];
-  image :any;
-  // imagess :Promise<string[]>;
+  imageCounter:number = 1;
+  image1 :any; image2 :any; image3 :any; image4 :any; image5 :any; image6 :any;
+  image7 :any; image8 :any; image9 :any; image10 :any; image11 :any; image12 :any;
+  
 
   constructor(
     private storageService :StorageService,
@@ -19,32 +20,30 @@ export class GalleryComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-
-    this.testPhotos();
-
-    // this.supabase.getAllChallenges().then(ret=>{
-    //   ret.forEach(challenge=>{
-    //     if(challenge.path != "" && challenge.path != null){
-    //       console.log(challenge.path);
-    //       //display every image
-    //     }
-    //   })
-    // })
+    this.imageCounter = 1;
+    this.supabase.getAllChallenges().then(ret=>{
+      ret.forEach(challenge=>{
+        if(challenge.path != "" && challenge.path != null){
+          console.log(challenge.path);
+          //display every image
+          this.downloadImage(challenge.path);
+        }
+      })
+    })
 
   }
 
-  async testPhotos(){
-    await this.storageService.download('photos', 'test.jpg').then((response) =>{
+  async downloadImage(path:string){
+    await this.storageService.download('photos', path).then((response) =>{
       const reader = new FileReader();
       reader.readAsDataURL(response.data);
       reader.onload = _event => {
-        // console.log("reader result: " + reader.result);
+        var localImage = "image" + this.imageCounter.toString()
+        console.log(localImage);
+        this[localImage] = reader.result;
+        console.log('single:' + this[localImage]);
 
-        this.images.push(reader.result);
-        console.log('list:', this.images)
-        
-        this.image = reader.result;
-        console.log('single:' + this.image);
+        this.imageCounter++;
       };
     });
   }
