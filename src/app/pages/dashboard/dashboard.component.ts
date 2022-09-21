@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import {AuthChangeEvent, createClient, Session, SupabaseClient} from '@supabase/supabase-js';
 import { Challenge } from 'app/model/challenge';
 import { StorageService } from 'app/storage.service';
+import { SupabaseAuthService } from 'app/supabase-auth.service';
+import { sign } from 'crypto';
 import * as internal from 'stream';
 import {environment} from "../../../environments/environment";
 import { SupabaseService } from "../../supabase.service";
@@ -32,7 +35,9 @@ export class DashboardComponent implements OnInit{
   constructor(private readonly supabase: SupabaseService,
     private storageService: StorageService,
     private sanitizer: DomSanitizer,
-    private toastService: ToastService){
+    private toastService: ToastService,
+    private authService:SupabaseAuthService,
+    private router: Router){
     this.checkBucketExists();
     this.message = null;
     this.status = false;
@@ -42,21 +47,29 @@ export class DashboardComponent implements OnInit{
   }
 
   async ngOnInit(){
-    this.challenges = await this.supabase.getAllChallenges();
-    /* Load Images if exists */
-    this.challenges.forEach(async challenge=>{
-      if(challenge.path != null && challenge.path != ""){
-        // console.log("Challenge: ", challenge.title)
-        await this.getImageFromPath(challenge.path, challenge);
+    if(this.authService.getSession()){
+      console.log(this.authService.getSession().access_token)
 
-        
-      }
-    })
-    /* Update Widgets */
-    this.getCountsChallenges()
-    this.getBalance()
-
-    // console.log("challenges:",this.challenges);
+      this.challenges = await this.supabase.getAllChallenges();
+      /* Load Images if exists */
+      this.challenges.forEach(async challenge=>{
+        if(challenge.path != null && challenge.path != ""){
+          // console.log("Challenge: ", challenge.title)
+          await this.getImageFromPath(challenge.path, challenge);
+  
+          
+        }
+      })
+      /* Update Widgets */
+      this.getCountsChallenges()
+      this.getBalance()
+  
+      // console.log("challenges:",this.challenges);
+    }
+    else{
+      console.log("not logged in");
+      this.router.navigate(['signIn']);
+    }
   }
 
   checkBucketExists() {

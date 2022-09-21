@@ -14,7 +14,8 @@ export class SignInComponent {
   user: IUser;
 
   constructor(private router: Router,
-              private supabaseService: SupabaseAuthService) {
+              private supabaseService: SupabaseAuthService,
+              private authService:SupabaseAuthService) {
                 this.session = this.supabaseService.getSession();
     this.loading = false;
     this.user = {} as IUser;
@@ -25,6 +26,7 @@ export class SignInComponent {
     this.loading = true;
     this.supabaseService.signIn()
     .then(() => {
+      console.log("Authenticated: " + this.authService.getSession().access_token);
     }).catch(() => {
       this.loading = false;
     });
