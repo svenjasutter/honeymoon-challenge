@@ -41,6 +41,7 @@
     "moment": "^2.29.3",
     "ngx-toastr": "14.3.0",
     "rxjs": "^7.5.5",
+    "sweetalert2": "^11.4.33",
     "zone.js": "~0.11.5"
   },
   "devDependencies": {

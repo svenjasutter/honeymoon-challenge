@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IUser, SupabaseAuthService } from '../../supabase-auth.service';
+import Swal from 'sweetalert2'
 
 
 @Component({
@@ -13,9 +14,10 @@ export class SignInComponent {
   loading: boolean;
   user: IUser;
 
+  
+
   constructor(private router: Router,
-              private supabaseService: SupabaseAuthService,
-              private authService:SupabaseAuthService) {
+              private supabaseService: SupabaseAuthService) {
                 this.session = this.supabaseService.getSession();
     this.loading = false;
     this.user = {} as IUser;
@@ -24,12 +26,21 @@ export class SignInComponent {
 
   public signIn(): void {
     this.loading = true;
-    this.supabaseService.signIn()
+    this.supabaseService.signIn(this.user.email)
     .then(() => {
-      console.log("Authenticated: " + this.authService.getSession().access_token);
     }).catch(() => {
       this.loading = false;
     });
+
+    Swal.fire(
+      'Willkommen!',
+      'Der Zugangslink wurde dir per Mail zugesendet. Dieser Tab kann nun geschlossen werden.',
+      'success'
+    )
+
+    window.self.close(); 
+
+
   }
 
 

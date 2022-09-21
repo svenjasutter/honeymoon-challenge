@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SupabaseAuthService } from 'app/supabase-auth.service';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 export interface RouteInfo {
@@ -28,7 +31,24 @@ export const ROUTES: RouteInfo[] = [
 
 export class SidebarComponent implements OnInit {
     public menuItems: any[];
+    constructor(
+        private authService:SupabaseAuthService,
+        private router:Router){
+
+    }
     ngOnInit() {
         this.menuItems = ROUTES.filter(menuItem => menuItem);
+    }
+
+    logout(){
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Du wird ausgeloggt.',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        this.authService.signOut();
+        this.router.navigate(['signIn']);
     }
 }

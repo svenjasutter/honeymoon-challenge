@@ -32,6 +32,6 @@ export const AppRoutes: Routes = [
   }]},
   {
     path: '**',
-    redirectTo: 'signIn'
+    redirectTo: 'dashboard'
   }
 ]

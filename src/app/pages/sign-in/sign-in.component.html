@@ -27,31 +27,25 @@
 <div class="row justify-content-center my-5">
     <div class="col-6">
       <div class="card">
-        <div class="card-body">
-          <!-- <div class="row">
+        <div class="card-body justify-content-center">
+
+          <h1>Willkommen!</h1>
+          <p>Bitte melden dich an. Danach wird dir ein Zugangslink zugeschickt mit welchem du auf die Challanges zugreifen kannst.</p>
+          <br>
+          <div class="row">
             <div class="col mb-2">
               <label for="email" class="form-label">Email:</label>
               <input type="email" id="email" name="email" #email="ngModel" [(ngModel)]="user.email" class="form-control form-control-sm">
             </div>
-          </div> -->
-          <h1>Welcome</h1>
-          <h4>Please sign in:</h4>
+          </div>
           <div class="row">
             <div class="col d-grid">
               <button type="button" (click)="signIn()" class="btn btn-sm btn-success" [disabled]="loading">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="loading"></span>
-                Sign in with Google
+                Sign in
               </button>
             </div>
           </div>
-          <!-- <div class="row">
-            <div class="col d-grid">
-              <button type="button" (click)="signIn()" class="btn btn-sm btn-success" [disabled]="loading">
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="loading"></span>
-                Sign in with Apple
-              </button>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>

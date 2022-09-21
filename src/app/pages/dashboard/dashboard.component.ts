@@ -10,6 +10,7 @@ import * as internal from 'stream';
 import {environment} from "../../../environments/environment";
 import { SupabaseService } from "../../supabase.service";
 import { ToastService } from '../toast/toast.service';
+import Swal from 'sweetalert2'
 
 
 @Component({
@@ -47,29 +48,30 @@ export class DashboardComponent implements OnInit{
   }
 
   async ngOnInit(){
-    if(this.authService.getSession()){
-      console.log(this.authService.getSession().access_token)
 
-      this.challenges = await this.supabase.getAllChallenges();
-      /* Load Images if exists */
-      this.challenges.forEach(async challenge=>{
-        if(challenge.path != null && challenge.path != ""){
-          // console.log("Challenge: ", challenge.title)
-          await this.getImageFromPath(challenge.path, challenge);
-  
-          
-        }
-      })
-      /* Update Widgets */
-      this.getCountsChallenges()
-      this.getBalance()
-  
-      // console.log("challenges:",this.challenges);
-    }
-    else{
-      console.log("not logged in");
-      this.router.navigate(['signIn']);
-    }
+    this.challenges = await this.supabase.getAllChallenges();
+    /* Load Images if exists */
+    this.challenges.forEach(async challenge=>{
+      if(challenge.path != null && challenge.path != ""){
+        // console.log("Challenge: ", challenge.title)
+        await this.getImageFromPath(challenge.path, challenge);
+
+        
+      }
+    })
+    /* Update Widgets */
+    this.getCountsChallenges()
+    this.getBalance()
+
+    // console.log("challenges:",this.challenges);
+
+    // if(this.authService.getSession()){
+      
+    // }
+    // else{
+    //   console.log("not logged in");
+    //   this.router.navigate(['signIn']);
+    // }
   }
 
   checkBucketExists() {
@@ -125,6 +127,21 @@ export class DashboardComponent implements OnInit{
           autohide: true,
           classname: 'bg-success text-light',
         });
+
+        Swal.fire({
+          title: 'Congratulation!',
+          text: 'Die Challenge ist abgeschlossen. Das Bild wurde der Gallerie hinzugefügt.',
+          width: 600,
+          padding: '3em',
+          color: '#716add',
+          background: '#fff',
+          backdrop: `
+            rgba(0,0,123,0.4)
+            url("../../../assets/img/nyan-cat.gif")
+            left top
+            no-repeat
+          `
+        })
 
         // this.message = `File ${file.name} uploaded with success!`;
         // this.updateCardWithImage(id, name);

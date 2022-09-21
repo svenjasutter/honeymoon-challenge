@@ -42,11 +42,11 @@ export class SupabaseAuthService {
     return this.supabaseClient.auth.onAuthStateChange(callback);
   }
 
-  public signIn(): Promise<any> {
-    return this.supabaseClient.auth.signIn({
-      provider: 'google',
-    });
-  }
+  public signIn(email: string): Promise<any> {
+  return this.supabaseClient.auth.signIn({
+    email,
+  });
+}
 
   public signOut(): Promise<any> {
     return this.supabaseClient.auth.signOut();
