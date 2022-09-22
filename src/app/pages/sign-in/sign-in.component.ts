@@ -36,16 +36,16 @@ export class SignInComponent {
       'Willkommen!',
       'Der Zugangslink wurde dir per Mail zugesendet. Dieser Tab kann nun geschlossen werden.',
       'success'
-    )
+    ).then(x =>{
 
-    window.self.close(); 
-
-
+      
+    })
   }
 
 
   public ngOnInit(): void {
     this.supabaseService.authChanges((_, session) => this.session = session);
+console.log(this.supabaseService.getUser());
   }
 
   public isAuthenticated(): boolean {

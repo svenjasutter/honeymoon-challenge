@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit{
 
   countCompleted :Number;
   countOpen :Number;
-  balance :number;
+  balance :number = 0;
 
   constructor(private readonly supabase: SupabaseService,
     private storageService: StorageService,
@@ -60,8 +60,8 @@ export class DashboardComponent implements OnInit{
       }
     })
     /* Update Widgets */
-    this.getCountsChallenges()
-    this.getBalance()
+    this.getCountsChallenges();
+    this.getBalance();
 
     // console.log("challenges:",this.challenges);
 
@@ -75,6 +75,8 @@ export class DashboardComponent implements OnInit{
     //   console.log("not logged in");
     //   this.router.navigate(['signIn']);
     // }
+
+
   }
   checkBucketExists() {
     this.storageService.getBucket().then((data) => {
@@ -116,12 +118,13 @@ export class DashboardComponent implements OnInit{
       if (data.error) {
         /*Upload failed*/
         // this.message = `Error send message ${data.error.message}`;
-        this.toastService.show(`Error: ${data.error.message}`, {
-          delay: 7000,
-          autohide: true,
-          classname: 'bg-danger text-light',
-        });
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Das selbe Bild befindet sich möglicherweise bereits in der Gallerie.',
+        })
       } else {
+        
         /*Upload success*/
 
         this.toastService.show(`File ${file.name} uploaded with success!`, {
@@ -142,29 +145,30 @@ export class DashboardComponent implements OnInit{
             url("../../../assets/img/nyan-cat.gif")
             left top
             no-repeat
-          `
+          `,
+          confirmButtonText: 'OK',
+        }).then((result) =>{
+          window.location.reload();
         })
 
         // this.message = `File ${file.name} uploaded with success!`;
         // this.updateCardWithImage(id, name);
         this.updateChallengeWithImageAndDone(id, name);
-        this.ngOnInit();
       }
       // console.log("message:", this.message)
       this.status = false;
-      this.ngOnInit();
     });
   }
 
   /* NOT WORKING!!! */
-  updateCardWithImage(id:Number, name:string){
-    /* Get uploaded Image from Challenge */
-    this.storageService.download(this.bucket,name).then((blob)=>{
-      let objectURL = URL.createObjectURL(blob.data);       
-      var c = this.challenges.find(x=>x.id = id);
-      c.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-    })
-  }
+  // updateCardWithImage(id:Number, name:string){
+  //   /* Get uploaded Image from Challenge */
+  //   this.storageService.download(this.bucket,name).then((blob)=>{
+  //     let objectURL = URL.createObjectURL(blob.data);       
+  //     var c = this.challenges.find(x=>x.id = id);
+  //     c.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  //   })
+  // }
 
   updateChallengeWithImageAndDone(id:number, path:string){
     var c = this.challenges.find(x => x.id = id);
@@ -175,12 +179,13 @@ export class DashboardComponent implements OnInit{
   async revertChallenge(id:number){
     await this.supabase.deletePhotoById(id).then(
       x=>{
-        console.log("Revert challenge" + id);
-        this.supabase.revertChallenge(id);
-        this.ngOnInit();
+        // console.log("Revert challenge" + id);
+        this.supabase.revertChallenge(id).then(x=>{
+          window.location.reload();
+        });
       }
     );
-    this.ngOnInit();
+    this.balance = 0;
   }
 
   //#region Widgets
@@ -194,10 +199,11 @@ export class DashboardComponent implements OnInit{
     }
 
     getBalance(){
-      this.balance = 0;
+      this.balance = 0;   
       this.supabase.getAllChallenges().then(ret=>{
-        ret.forEach(challenge=>{
+        ret.forEach(challenge => {
           if(challenge.done){
+            console.log(challenge.profit);
             this.balance += challenge.profit;
           }
         })

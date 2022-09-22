@@ -31,9 +31,9 @@ export class SupabaseService {
       };
       challengelist.push(challenge);
     });
-    challengelist.forEach(element => {
-      // console.log(element.id + ":" + element.title);
-    });
+    // challengelist.forEach(element => {
+    //   console.log(element.id + ":" + element.title);
+    // });
     return challengelist;
   }
 
