@@ -65,15 +65,17 @@ export class DashboardComponent implements OnInit{
 
     // console.log("challenges:",this.challenges);
 
-    // if(this.authService.getSession()){
-      
+    
+    // const userSession = this.authService.getUser();
+    // console.log(userSession);
+    // if(userSession){
+    //   console.log("logged in");
     // }
     // else{
     //   console.log("not logged in");
     //   this.router.navigate(['signIn']);
     // }
   }
-
   checkBucketExists() {
     this.storageService.getBucket().then((data) => {
       if (!data.data) {
