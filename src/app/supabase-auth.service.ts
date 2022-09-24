@@ -22,10 +22,12 @@ export class SupabaseAuthService {
   }
 
   public getUser(): User|null {
+    // console.log("u", this.supabaseClient.auth.user());
     return this.supabaseClient.auth.user();
   }
 
   public getSession(): Session|null {
+    // console.log("s", this.supabaseClient.auth.session());
     return this.supabaseClient.auth.session();
   }
 
@@ -45,6 +47,8 @@ export class SupabaseAuthService {
   public signIn(email: string): Promise<any> {
   return this.supabaseClient.auth.signIn({
     email,
+  }).then((ret)=>{
+    // console.log("ret:",ret);
   });
 }
 

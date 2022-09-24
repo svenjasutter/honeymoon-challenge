@@ -11,7 +11,7 @@ export class ToastService {
   // Push new Toasts to array with content and options
   show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
     this.toasts.push({ textOrTpl, ...options });
-    console.log("In Toast", this.toasts);
+    // console.log("In Toast", this.toasts);
   }
 
   // Callback method to remove Toast DOM element from view

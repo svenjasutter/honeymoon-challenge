@@ -38,8 +38,8 @@ export class SupabaseService {
   }
 
   async completeChallenge(challenge:Challenge, path:string){
-    console.log("pathhhh", path)
-    console.log("chall", challenge)
+    // console.log("pathhhh", path)
+    // console.log("chall", challenge)
     const update = {
       path: path,
       done: true
@@ -50,7 +50,7 @@ export class SupabaseService {
       .update(update)
       .match({id: challenge.id})
       .then(a=>{
-        console.log("data after update:",a);
+        // console.log("data after update:",a);
       }) 
   }
 
@@ -64,7 +64,7 @@ export class SupabaseService {
       .update(update)
       .match({id: challengeid})
       .then(a=>{
-        console.log("data after revert:",a);
+        // console.log("data after revert:",a);
       });
   }
 
@@ -74,7 +74,7 @@ export class SupabaseService {
       .select();
     data?.forEach((challenge) => {
       if (challenge.id == idChallenge){
-        console.log("delete path: " + challenge.path + challenge.id+ challenge.title);
+        // console.log("delete path: " + challenge.path + challenge.id+ challenge.title);
         this.storageService.deletePhotoFromBucket(challenge.path);
         
       }

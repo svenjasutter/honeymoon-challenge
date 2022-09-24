@@ -33,7 +33,10 @@ export class DashboardComponent implements OnInit{
   countOpen :Number;
   balance :number = 0;
 
-  constructor(private readonly supabase: SupabaseService,
+  session :any;
+
+  constructor(
+    private readonly supabase: SupabaseService,
     private storageService: StorageService,
     private sanitizer: DomSanitizer,
     private toastService: ToastService,
@@ -42,40 +45,26 @@ export class DashboardComponent implements OnInit{
     this.checkBucketExists();
     this.message = null;
     this.status = false;
-  }
-  transform(value: any, ...args: any[]) {
-    throw new Error('Method not implemented.');
-  }
+    }
+
 
   async ngOnInit(){
 
     this.challenges = await this.supabase.getAllChallenges();
     /* Load Images if exists */
-    this.challenges.forEach(async challenge=>{
-      if(challenge.path != null && challenge.path != ""){
-        // console.log("Challenge: ", challenge.title)
-        await this.getImageFromPath(challenge.path, challenge);
+    // this.challenges.forEach(async challenge=>{
+    //   if(challenge.path != null && challenge.path != ""){
+    //     // console.log("Challenge: ", challenge.title)
+    //     await this.getImageFromPath(challenge.path, challenge);
 
         
-      }
-    })
+    //   }
+    // })
     /* Update Widgets */
     this.getCountsChallenges();
     this.getBalance();
 
     // console.log("challenges:",this.challenges);
-
-    
-    // const userSession = this.authService.getUser();
-    // console.log(userSession);
-    // if(userSession){
-    //   console.log("logged in");
-    // }
-    // else{
-    //   console.log("not logged in");
-    //   this.router.navigate(['signIn']);
-    // }
-
 
   }
   checkBucketExists() {
@@ -83,15 +72,15 @@ export class DashboardComponent implements OnInit{
       if (!data.data) {
         this.storageService.createBucket().then((data) => {
           if (data.error) {
-            console.log(`Erro at create bucket: ${data.error.message}`);
+            // console.log(`Erro at create bucket: ${data.error.message}`);
           } else {
-            console.log('create bucket photos');
+            // console.log('create bucket photos');
             this.bucket = 'photos';
           }
         });
       } else {
         this.bucket = data.data.name;
-        console.log(`bucket ${this.bucket} exists.`);
+        // console.log(`bucket ${this.bucket} exists.`);
       }
     });
   }
@@ -160,19 +149,9 @@ export class DashboardComponent implements OnInit{
     });
   }
 
-  /* NOT WORKING!!! */
-  // updateCardWithImage(id:Number, name:string){
-  //   /* Get uploaded Image from Challenge */
-  //   this.storageService.download(this.bucket,name).then((blob)=>{
-  //     let objectURL = URL.createObjectURL(blob.data);       
-  //     var c = this.challenges.find(x=>x.id = id);
-  //     c.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-  //   })
-  // }
-
   updateChallengeWithImageAndDone(id:number, path:string){
     var c = this.challenges.find(x => x.id = id);
-    console.log("complete this challenge:", c)
+    // console.log("complete this challenge:", c)
     this.supabase.completeChallenge(c, path);
   }
 
@@ -203,22 +182,22 @@ export class DashboardComponent implements OnInit{
       this.supabase.getAllChallenges().then(ret=>{
         ret.forEach(challenge => {
           if(challenge.done){
-            console.log(challenge.profit);
+            // console.log(challenge.profit);
             this.balance += challenge.profit;
           }
         })
       })
     }
 
-    getImageFromPath(path:string, c:Challenge){
-      this.storageService.download(this.bucket,path).then((ret)=>{
-        var binaryData = [];
-        binaryData.push(ret.data);
-        let objectURL = URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
-        c.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-        // console.log("imagee",c.image);
-      })
-    }
+    // getImageFromPath(path:string, c:Challenge){
+    //   this.storageService.download(this.bucket,path).then((ret)=>{
+    //     var binaryData = [];
+    //     binaryData.push(ret.data);
+    //     let objectURL = URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
+    //     c.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    //     // console.log("imagee",c.image);
+    //   })
+    //}
   //#endregion
   
 

@@ -24,7 +24,7 @@ export class GalleryComponent implements OnInit {
     this.supabase.getAllChallenges().then(ret=>{
       ret.forEach(challenge=>{
         if(challenge.path != "" && challenge.path != null){
-          console.log(challenge.path);
+          // console.log(challenge.path);
           //display every image
           this.downloadImage(challenge.path);
         }
@@ -39,9 +39,9 @@ export class GalleryComponent implements OnInit {
       reader.readAsDataURL(response.data);
       reader.onload = _event => {
         var localImage = "image" + this.imageCounter.toString()
-        console.log(localImage);
+        // console.log(localImage);
         this[localImage] = reader.result;
-        console.log('single:' + this[localImage]);
+        // console.log('single:' + this[localImage]);
 
         this.imageCounter++;
       };
